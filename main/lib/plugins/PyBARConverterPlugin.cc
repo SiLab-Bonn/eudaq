@@ -93,7 +93,7 @@ namespace eudaq {
         // ceck data consistency
         unsigned int dh_found = 0;
         for (unsigned int i=4; i < data.size(); i += 4) {   // 8->4 trigger from pybar is 32bits
-          unsigned word = (((unsigned int)data[i]) << 24) | (((unsigned int)data[i +1]) << 16) | (((unsigned int)data[i + 2]) << 8) | (unsigned int)data[i+3];
+          unsigned word = (((unsigned int)data[i+3]) << 24) | (((unsigned int)data[i +2]) << 16) | (((unsigned int)data[i + 1]) << 8) | (unsigned int)data[i]; //inverted 2015-09-15
           //printf("isEventValid word=%08x,masked=%08x, %d\n",word,(PYBAR_DATA_HEADER_MASK & word),int(PYBAR_DATA_HEADER_MACRO(word)));
           if (PYBAR_DATA_HEADER_MACRO(word))	{
             dh_found++;
@@ -120,7 +120,7 @@ namespace eudaq {
         //}
         //printf("\n");
         //unsigned int i = data.size() - 4; // 8->4 hirono //splitted in 2x 32bit words
-        unsigned Trigger_word1 = (((unsigned int)data[0]) << 24) | (((unsigned int)data[1]) << 16) | (((unsigned int)data[2]) << 8) | (unsigned int)data[3];
+        unsigned Trigger_word1 = (((unsigned int)data[3]) << 24) | (((unsigned int)data[2]) << 16) | (((unsigned int)data[1]) << 8) | (unsigned int)data[0];
         //unsigned Trigger_word1 = (((unsigned int)data[i + 3]) << 24) | (((unsigned int)data[i + 2]) << 16) | (((unsigned int)data[i + 1]) << 8) | (unsigned int)data[i];
 
         unsigned int trigger_number = 0x7FFFFFFF & Trigger_word1;  //hirono 
@@ -205,7 +205,7 @@ namespace eudaq {
 
         // Get Events
         for (unsigned int i=4; i < data.size(); i += 4) {
-          unsigned int Word = (((unsigned int)data[i]) << 24) | (((unsigned int)data[i+1]) << 16) | (((unsigned int)data[i+2]) << 8) | (unsigned int)data[i+3];
+          unsigned int Word = (((unsigned int)data[i+3]) << 24) | (((unsigned int)data[i+2]) << 16) | (((unsigned int)data[i+1]) << 8) | (unsigned int)data[i];
           //printf("ConvertPlane() word=%08x masked=%08x %d\n",Word,(PYBAR_DATA_HEADER_MASK & Word),PYBAR_DATA_HEADER_MACRO(Word));
           if (PYBAR_DATA_HEADER_MACRO(Word)) {
             lvl1++;
@@ -359,7 +359,7 @@ namespace eudaq {
           unsigned int lvl1 = 0;
 
           for (unsigned int i=4; i < buffer.size(); i += 4) {
-            unsigned int Word = (((unsigned int)buffer[i]) << 24) | (((unsigned int)buffer[i+1]) << 16) | (((unsigned int)buffer[i+2]) << 8) | (unsigned int)buffer[i+3];
+            unsigned int Word = (((unsigned int)buffer[i+3]) << 24) | (((unsigned int)buffer[i+2]) << 16) | (((unsigned int)buffer[i+1]) << 8) | (unsigned int)buffer[i];
 
             if (PYBAR_DATA_HEADER_MACRO(Word)) {
               lvl1++;
